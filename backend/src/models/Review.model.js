@@ -2,9 +2,16 @@ import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema(
   {
-    tourId: {
-      type: mongoose.Types.ObjectId,
-      ref: "Tour",
+    accommodationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      refPath: "accommodationType", // Dynamically reference either 'Hotel' or 'GuestHouse'
+      required: true,
+    },
+
+    accommodationType: {
+      type: String,
+      enum: ["Hotel", "GuestHouse"],
+      required: true,
     },
 
     username: {

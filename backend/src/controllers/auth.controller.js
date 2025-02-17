@@ -4,9 +4,11 @@ import { generateToken } from "../lib/utils.js";
 
 export const register = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
-  const fullNamee = `${firstName} + " "+ ${lastName}`;
+  const fullName = `${firstName} ${lastName}`;
+
   try {
-    if (!fullNamee || !email || !password) {
+    // Validate input fields
+    if (!fullName || !email || !password) {
       return res.status(400).json({ message: "All fields are required " });
     }
 
@@ -16,35 +18,35 @@ export const register = async (req, res) => {
         .json({ message: "Password must be at least 6 characters long" });
     }
 
+    // Check if the email already exists
     const user = await User.findOne({ email });
 
     if (user) return res.status(400).json({ message: "Email already exists " });
 
-    const salt = bcrypt.genSalt(10);
-    const hashedPassword = bcrypt.hashSync(req.body.password, salt);
+    // Generate salt and hash the password
+    const salt = await bcrypt.genSalt(10); // Await the promise
+    const hashedPassword = await bcrypt.hash(password, salt); // Use async hash function
 
+    // Create the new user
     const newUser = new User({
-      fullNamee,
+      fullName,
       email,
       password: hashedPassword,
-      role,
+      role: "user", // Default role
     });
 
-    if (newUser) {
-      // generate jwt token here
-      generateToken(newUser._id, res);
-      await newUser.save();
+    // Save the user and generate JWT token
+    await newUser.save();
+    generateToken(newUser._id, res);
 
-      res.status(201).json({
-        _id: newUser._id,
-        fullName: newUser.fullName,
-        email: newUser.email,
-        profilePic: newUser.profilePic,
-        role: newUser.role,
-      });
-    } else {
-      res.status(400).json({ message: "Invalid user data" });
-    }
+    // Send the response
+    res.status(201).json({
+      _id: newUser._id,
+      fullName: newUser.fullName,
+      email: newUser.email,
+      profilePic: newUser.profilePic,
+      role: newUser.role,
+    });
   } catch (error) {
     console.log("Error in signup controller", error.message);
     res.status(500).json({ message: "Internal Server Error" });
@@ -60,15 +62,18 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    // Compare passwords
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const { password, role, ...rest } = user._doc;
+    const { password: userPassword, role, ...rest } = user._doc;
 
+    // Generate token
     generateToken(user._id, res);
 
+    // Send response
     res.status(200).json({
       _id: user._id,
       fullName: user.fullName,
@@ -76,12 +81,12 @@ export const login = async (req, res) => {
       profilePic: user.profilePic,
       role: user.role,
     });
-
   } catch (error) {
     console.log("Error in login controller", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 export const logout = (req, res) => {
   try {

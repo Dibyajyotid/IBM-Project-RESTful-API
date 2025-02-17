@@ -3,15 +3,19 @@ import mongoose from "mongoose";
 const bookingSchema = new mongoose.Schema(
   {
     userId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
 
     userEmail: {
       type: String,
+      required: true,
     },
 
-    tourName: {
-      type: String,
+    accommodationId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Accommodation", // Now directly references the unified Accommodation model
       required: true,
     },
 

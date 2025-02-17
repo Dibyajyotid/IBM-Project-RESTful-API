@@ -1,11 +1,31 @@
 import mongoose from "mongoose";
 
-const tourSchema = new mongoose.Schema(
+const accommodationSchema = new mongoose.Schema(
   {
-    title: {
+    name: {
       type: String,
       required: true,
-      unique: true,
+    },
+
+    type: {
+      type: String,
+      enum: ["hotel", "guesthouse"],
+      required: true,
+    },
+
+    price: {
+      type: Number,
+      required: true,
+    },
+
+    maxSize: {
+      type: Number,
+      required: true,
+    },
+
+    phone: {
+      type: Number,
+      required: true,
     },
 
     city: {
@@ -18,11 +38,6 @@ const tourSchema = new mongoose.Schema(
       required: true,
     },
 
-    distance: {
-      type: Number,
-      required: true,
-    },
-
     photo: {
       type: String,
       required: true,
@@ -30,16 +45,6 @@ const tourSchema = new mongoose.Schema(
 
     desc: {
       type: String,
-      required: true,
-    },
-
-    price: {
-      type: Number,
-      required: true,
-    },
-
-    maxGroupSize: {
-      type: Number,
       required: true,
     },
 
@@ -58,5 +63,5 @@ const tourSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Tour = mongoose.model("Tour", tourSchema);
-export default Tour;
+const Accommodation = mongoose.model("Accommodation", accommodationSchema);
+export default Accommodation;

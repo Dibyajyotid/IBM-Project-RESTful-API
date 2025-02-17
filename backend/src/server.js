@@ -2,9 +2,10 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
 import { connectDB } from "./lib/db.js";
 import authRoute from "./routes/auth.route.js";
-import tourRoute from "./routes/tours.route.js";
+import accomodationRoute from "./routes/accomodation.route.js";
 import userRoute from "./routes/user.route.js";
 import bookingRoute from "./routes/booking.route.js";
 import reviewRoute from "./routes/review.route.js";
@@ -26,7 +27,7 @@ app.use(
 );
 
 app.use("/api/auth", authRoute);
-app.use("/api/tours", tourRoute);
+app.use("/api/accomodations", accomodationRoute);
 app.use("/api/users", userRoute);
 app.use("/api/reviews", reviewRoute);
 app.use("/api/booking", bookingRoute);
