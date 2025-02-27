@@ -36,24 +36,15 @@ const Auth = () => {
         `http://localhost:5090${endpoint}`,
         formData,
         {
-          withCredentials: true,
+          withCredentials: true, // ✅ Ensures cookies are sent
         }
       );
 
-      console.log("Login Response:", data); // Debugging
-
-      if (data.success && data.token) {
-        // Ensure token exists
-        login(data.token, data.user);
-        navigate("/");
-      } else {
-        setError("Invalid credentials or missing token!");
+      if (data.success) {
+        login(data.token, data.user); // ✅ Save token and user info
+        navigate("/"); // ✅ Redirect to homepage
       }
     } catch (err) {
-      console.error(
-        "Error:",
-        err.response?.data?.message || "Something went wrong!"
-      );
       setError(err.response?.data?.message || "Something went wrong!");
     }
   };

@@ -72,3 +72,40 @@
     margin: 5px 0;
   }
   
+
+  .booking-form-container {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+  }
+  
+  .booking-form-container h2 {
+    margin-bottom: 10px;
+  }
+  
+  .booking-form-container form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .booking-form-container input {
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .booking-form-container button {
+    background: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .booking-form-container button:hover {
+    background: #0056b3;
+  }
+  

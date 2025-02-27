@@ -4,10 +4,8 @@ import { generateToken } from "../lib/utils.js";
 
 export const register = async (req, res) => {
   const { fullName, email, password } = req.body;
-  //const fullName = `${firstName} ${lastName}`;
 
   try {
-    // Validate input fields
     if (!fullName || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
@@ -18,34 +16,34 @@ export const register = async (req, res) => {
         .json({ message: "Password must be at least 6 characters long" });
     }
 
-    // Check if the email already exists
     const user = await User.findOne({ email });
 
     if (user) return res.status(400).json({ message: "Email already exists" });
 
-    // Generate salt and hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create the new user
     const newUser = new User({
       fullName,
       email,
       password: hashedPassword,
-      role: "user", // Assign role from req.body, default to "user"
+      role: "user",
     });
 
-    // Save the user and generate JWT token
     await newUser.save();
-    generateToken(newUser._id, res);
 
-    // Send the response
+    const token = generateToken(newUser, res);
+
     res.status(201).json({
-      _id: newUser._id,
-      fullName: newUser.fullName,
-      email: newUser.email,
-      profilePic: newUser.profilePic,
-      role: newUser.role,
+      success: true,
+      token,
+      user: {
+        _id: newUser._id,
+        fullName: newUser.fullName,
+        email: newUser.email,
+        profilePic: newUser.profilePic,
+        role: newUser.role,
+      },
     });
   } catch (error) {
     console.log("Error in signup controller", error.message);
@@ -62,21 +60,16 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    // Compare passwords
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const { password: userPassword, role, ...rest } = user._doc;
+    const token = generateToken(user, res);
 
-    // Generate token
-    const token = generateToken(user._id, res); // Ensure this function returns a token
-
-    // Send response
     res.status(200).json({
       success: true,
-      token, // Include token in response
+      token, 
       user: {
         _id: user._id,
         fullName: user.fullName,

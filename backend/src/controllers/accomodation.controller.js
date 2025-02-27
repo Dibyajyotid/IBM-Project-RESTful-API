@@ -1,47 +1,72 @@
-import Accommodation from "../models/Accomodation.model.js";
+import Accommodation from "../models/Accomodation.model.js"; // ✅ Ensure correct model import
 
 // Create new accommodation
 export const createAccommodation = async (req, res) => {
   try {
     const newAccommodation = new Accommodation(req.body);
     const savedAccommodation = await newAccommodation.save();
-    res.status(200).json({
+    res.status(201).json({
       success: true,
-      message: "Successfully created",
+      message: "Accommodation created successfully",
       data: savedAccommodation,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to create" });
+    console.error("Error creating accommodation:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to create accommodation" });
   }
 };
 
 // Update accommodation
 export const updateAccommodation = async (req, res) => {
-  const { id } = req.params;
   try {
     const updatedAccommodation = await Accommodation.findByIdAndUpdate(
-      id,
+      req.params.id,
       { $set: req.body },
       { new: true }
     );
+
+    if (!updatedAccommodation) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Accommodation not found" });
+    }
+
     res.status(200).json({
       success: true,
-      message: "Successfully updated",
+      message: "Accommodation updated successfully",
       data: updatedAccommodation,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to update" });
+    console.error("Error updating accommodation:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to update accommodation" });
   }
 };
 
 // Delete accommodation
 export const deleteAccommodation = async (req, res) => {
-  const { id } = req.params;
   try {
-    await Accommodation.findByIdAndDelete(id);
-    res.status(200).json({ success: true, message: "Successfully deleted" });
+    const deletedAccommodation = await Accommodation.findByIdAndDelete(
+      req.params.id
+    );
+
+    if (!deletedAccommodation) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Accommodation not found" });
+    }
+
+    res
+      .status(200)
+      .json({ success: true, message: "Accommodation deleted successfully" });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to delete" });
+    console.error("Error deleting accommodation:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to delete accommodation" });
   }
 };
 
@@ -49,109 +74,83 @@ export const deleteAccommodation = async (req, res) => {
 export const getSingleAccommodation = async (req, res) => {
   try {
     const accommodation = await Accommodation.findById(req.params.id)
-      .populate("reviews") // Ensure reviews are included
+      .populate("reviews")
       .lean();
 
     if (!accommodation) {
-      return res.status(404).json({ success: false, message: "Not Found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Accommodation not found" });
     }
+
+    // Calculate average ratings
+    accommodation.avgRatings = calculateAverageRatings(accommodation.reviews);
 
     res.status(200).json({
       success: true,
-      message: "Successfully retrieved",
+      message: "Accommodation retrieved successfully",
       data: accommodation,
-      avgRatings: accommodation.avgRatings,
     });
   } catch (error) {
+    console.error("Error retrieving accommodation:", error);
     res
       .status(500)
-      .json({ success: false, message: "Error retrieving accommodation" });
+      .json({ success: false, message: "Failed to retrieve accommodation" });
   }
 };
 
 // Get all accommodations
 export const getAllAccommodations = async (req, res) => {
-  const { type } = req.query;
-  const filter = type ? { type } : {}; // Filter by type if provided
-
   try {
+    const { type } = req.query;
+    const filter = type ? { type } : {};
+
     const accommodations = await Accommodation.find(filter).populate("reviews");
 
-    const accommodationsWithRatings = accommodations.map((accommodation) => {
-      const reviews = accommodation.reviews;
-      let avgRatings = null;
-
-      if (reviews.length > 0) {
-        const totalReviews = reviews.length;
-        avgRatings = {
-          overall: (
-            reviews.reduce(
-              (sum, r) =>
-                sum +
-                r.roomQuality +
-                r.cleanliness +
-                r.food +
-                r.parking +
-                r.staffBehaviour,
-              0
-            ) /
-            (totalReviews * 5)
-          ).toFixed(1),
-        };
-      }
-
-      return { ...accommodation.toObject(), avgRatings };
-    });
+    // Calculate ratings for each accommodation
+    const accommodationsWithRatings = accommodations.map((accommodation) => ({
+      ...accommodation.toObject(),
+      avgRatings: calculateAverageRatings(accommodation.reviews),
+    }));
 
     res.status(200).json({
       success: true,
       count: accommodations.length,
-      message: "Successfully retrieved",
+      message: "Accommodations retrieved successfully",
       data: accommodationsWithRatings,
     });
   } catch (error) {
-    res.status(404).json({ success: false, message: "Not Found" });
+    console.error("Error retrieving accommodations:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to retrieve accommodations" });
   }
 };
 
 // Get accommodations by search
 export const getAccommodationBySearch = async (req, res) => {
-  const { city, price } = req.query;
-  const filter = { city: new RegExp(city, "i") };
-  if (price) filter.price = { $gte: parseInt(price) };
-
   try {
+    const { city, price } = req.query;
+    const filter = { city: new RegExp(city, "i") };
+    if (price) filter.price = { $gte: parseInt(price) };
+
     const accommodations = await Accommodation.find(filter).populate("reviews");
 
-    const accommodationsWithRatings = accommodations.map((accommodation) => {
-      const reviews = accommodation.reviews;
-      let avgRatings = null;
+    const accommodationsWithRatings = accommodations.map((accommodation) => ({
+      ...accommodation.toObject(),
+      avgRatings: calculateAverageRatings(accommodation.reviews),
+    }));
 
-      if (reviews.length > 0) {
-        const totalReviews = reviews.length;
-        avgRatings = {
-          overall: (
-            reviews.reduce(
-              (sum, r) =>
-                sum +
-                r.roomQuality +
-                r.cleanliness +
-                r.food +
-                r.parking +
-                r.staffBehaviour,
-              0
-            ) /
-            (totalReviews * 5)
-          ).toFixed(1),
-        };
-      }
-
-      return { ...accommodation.toObject(), avgRatings };
+    res.status(200).json({
+      success: true,
+      message: "Accommodations retrieved successfully",
+      data: accommodationsWithRatings,
     });
-
-    res.status(200).json({ success: true, data: accommodationsWithRatings });
   } catch (error) {
-    res.status(404).json({ success: false, message: "Not Found" });
+    console.error("Error searching accommodations:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to search accommodations" });
   }
 };
 
@@ -162,35 +161,24 @@ export const getFeaturedAccommodations = async (req, res) => {
       .populate("reviews")
       .limit(8);
 
-    const accommodationsWithRatings = accommodations.map((accommodation) => {
-      const reviews = accommodation.reviews;
-      let avgRatings = null;
+    const accommodationsWithRatings = accommodations.map((accommodation) => ({
+      ...accommodation.toObject(),
+      avgRatings: calculateAverageRatings(accommodation.reviews),
+    }));
 
-      if (reviews.length > 0) {
-        const totalReviews = reviews.length;
-        avgRatings = {
-          overall: (
-            reviews.reduce(
-              (sum, r) =>
-                sum +
-                r.roomQuality +
-                r.cleanliness +
-                r.food +
-                r.parking +
-                r.staffBehaviour,
-              0
-            ) /
-            (totalReviews * 5)
-          ).toFixed(1),
-        };
-      }
-
-      return { ...accommodation.toObject(), avgRatings };
+    res.status(200).json({
+      success: true,
+      message: "Featured accommodations retrieved successfully",
+      data: accommodationsWithRatings,
     });
-
-    res.status(200).json({ success: true, data: accommodationsWithRatings });
   } catch (error) {
-    res.status(404).json({ success: false, message: "Not Found" });
+    console.error("Error retrieving featured accommodations:", error);
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "Failed to retrieve featured accommodations",
+      });
   }
 };
 
@@ -200,6 +188,31 @@ export const getAccommodationCount = async (req, res) => {
     const count = await Accommodation.estimatedDocumentCount();
     res.status(200).json({ success: true, data: count });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to fetch count" });
+    console.error("Error retrieving accommodation count:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to fetch accommodation count" });
   }
+};
+
+// Helper function to calculate average ratings
+const calculateAverageRatings = (reviews) => {
+  if (!reviews || reviews.length === 0) return null;
+
+  const totalReviews = reviews.length;
+  const avgOverall = (
+    reviews.reduce(
+      (sum, r) =>
+        sum +
+        r.roomQuality +
+        r.cleanliness +
+        r.food +
+        r.parking +
+        r.staffBehaviour,
+      0
+    ) /
+    (totalReviews * 5)
+  ).toFixed(1);
+
+  return { overall: avgOverall };
 };

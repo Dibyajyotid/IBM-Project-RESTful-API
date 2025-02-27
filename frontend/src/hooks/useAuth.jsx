@@ -1,20 +1,21 @@
 import { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
 
-// Create Auth Context
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [authTokens, setAuthTokens] = useState(() => {
-    const storedTokens = localStorage.getItem("authTokens");
-    return storedTokens ? JSON.parse(storedTokens) : null;
+    return localStorage.getItem("authTokens")
+      ? JSON.parse(localStorage.getItem("authTokens"))
+      : null;
   });
 
   const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem("user");
-    return storedUser ? JSON.parse(storedUser) : null;
+    return localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user"))
+      : null;
   });
 
-  // Sync state with localStorage when authTokens or user changes
   useEffect(() => {
     if (authTokens) {
       localStorage.setItem("authTokens", JSON.stringify(authTokens));
@@ -29,16 +30,17 @@ export const AuthProvider = ({ children }) => {
     }
   }, [authTokens, user]);
 
-  // Function to handle login
   const login = (tokens, userData) => {
+    console.log("Saving tokens:", tokens);
     setAuthTokens(tokens);
     setUser(userData);
   };
 
-  // Function to handle logout
   const logout = () => {
     setAuthTokens(null);
     setUser(null);
+    localStorage.removeItem("authTokens");
+    localStorage.removeItem("user");
   };
 
   return (
@@ -48,7 +50,5 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Custom hook to access authentication data
 export const useAuth = () => useContext(AuthContext);
-
 export default AuthProvider;
