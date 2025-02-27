@@ -1,0 +1,131 @@
+Hotel List Container
+.browse-hotels {
+    padding: 20px;
+    background-color: #FEFFF0;
+    text-align: center;
+  }
+  
+  .browse-hotels h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  
+  .browse-hotels p {
+    color: #333;
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  /* Hotel Card */
+  .hotel-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  
+  .hotel-card {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    max-width: 30%;
+    min-height: 380px;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+  }
+  
+  .hotel-card:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+  }
+  
+  /* Hotel Image */
+  .hotel-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    transition: transform 0.5s;
+  }
+  
+  .hotel-card:hover img {
+    transform: scale(1.05);
+  }
+  
+  /* Overlay on Hover */
+  .hotel-card .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  
+  .hotel-card:hover .overlay {
+    opacity: 1;
+  }
+  
+  /* Hotel Info */
+  .hotel-info {
+    padding: 16px;
+    transition: transform 0.5s;
+  }
+  
+  .hotel-info h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  
+  .hotel-info p {
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  /* Price & Rating */
+  .hotel-card .price-tag {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s;
+  }
+  
+  .hotel-card:hover .price-tag {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Star Rating */
+  .star-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #FFD700;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s;
+  }
+  
+  .hotel-card:hover .star-rating {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  

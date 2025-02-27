@@ -1,0 +1,55 @@
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px; /* Adjust padding for smaller screens */
+    background-color: #333;
+    color: white;
+    margin-bottom: 32px;
+}
+
+.navbar-brand a {
+    text-decoration: none;
+    font-size: 20px; /* Adjust font size */
+    font-weight: bold;
+    color: white;
+}
+
+.navbar-links {
+    display: flex;
+    gap: 25px;
+}
+
+.navbar-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.navbar-links a:hover {
+    color: #06262d;
+}
+
+/* Mobile view adjustments */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: row; /* Keep navbar items in a single line */
+        justify-content: space-between; /* Space out brand and links */
+        padding: 10px 15px; /* Adjust padding for mobile */
+    }
+
+    .navbar-links {
+        flex-direction: row; /* Keep links in one row */
+        gap: 10px; /* Adjust gap between links for mobile */
+    }
+
+    .navbar-links a {
+        font-size: 14px; /* Adjust font size for mobile */
+    }
+
+    .navbar-brand a {
+        font-size: 18px; /* Adjust brand font size for mobile */
+    }
+}

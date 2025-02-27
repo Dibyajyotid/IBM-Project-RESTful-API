@@ -1,0 +1,84 @@
+/* General Section Styling */
+.explore-section {
+    padding: 2.5rem 0;
+    width: 100vw;
+    margin: 0 auto;
+    overflow: hidden;
+    text-align: center;
+  }
+  
+  .explore-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  .explore-subtitle {
+    color: #4b5563; /* Tailwind's text-gray-600 */
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Swiper Container */
+  .swiper-container {
+    width: 100%;
+  }
+  
+  /* Swiper Slide */
+  .swiper-slide {
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* City Card */
+  .city-card {
+    position: relative;
+    width: 95%;
+    height: 350px;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transform: scale(0.95);
+    transition: transform 0.5s, box-shadow 0.5s;
+  }
+  
+  .city-card:hover {
+    transform: scale(1);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* City Image */
+  .city-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  /* City Overlay */
+  .city-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  
+  .city-card:hover .city-overlay {
+    opacity: 1;
+  }
+  
+  /* City Text */
+  .city-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  .city-description {
+    font-size: 0.875rem;
+  }
+  

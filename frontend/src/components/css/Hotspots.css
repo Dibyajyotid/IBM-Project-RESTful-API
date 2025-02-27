@@ -1,0 +1,80 @@
+.hotspots {
+    padding: 24px 20px;
+    text-align: center;
+  }
+  
+  .hotspots-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .hotspots-description {
+    color: #4a5568; /* Tailwind gray-700 */
+    margin-bottom: 16px;
+  }
+  
+  .swiper-container {
+    width: 100%;
+  }
+  
+  .swiper-slide {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .hotspot-card {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .hotspot-card:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .hotspot-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .hotspot-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .hotspot-card:hover .hotspot-overlay {
+    opacity: 1;
+  }
+  
+  .hotspot-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+  
+  .hotspot-text {
+    font-size: 0.875rem;
+  }
+  
+  .hotspot-link {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .hotspot-link:hover {
+    text-decoration: underline;
+  }
+  
