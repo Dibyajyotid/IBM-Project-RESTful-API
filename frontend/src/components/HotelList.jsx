@@ -10,11 +10,15 @@ const renderStars = (rating) => {
   return (
     <div className="flex items-center space-x-1">
       {[...Array(fullStars)].map((_, i) => (
-        <span key={`full-${i}`} className="text-yellow-500">⭐</span>
+        <span key={`full-${i}`} className="text-yellow-500">
+          ⭐
+        </span>
       ))}
       {hasHalfStar && <span className="text-yellow-500">⭐</span>}
       {[...Array(emptyStars)].map((_, i) => (
-        <span key={`empty-${i}`} className="text-gray-300">⭐</span>
+        <span key={`empty-${i}`} className="text-gray-300">
+          ⭐
+        </span>
       ))}
       <span className="text-gray-600 text-sm ml-1">({rating})</span>
     </div>
@@ -70,7 +74,7 @@ const HotelList = ({ title, hotels }) => {
               <div className="absolute bottom-3 right-3 flex flex-col items-end space-y-2">
                 {/* Price Tag (Fade-in from bottom) */}
                 <div className="bg-black bg-opacity-80 text-white py-1 px-3 rounded-md text-sm font-semibold opacity-0 translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">
-                  ${hotel.price}/night
+                  ₹{hotel.price}/night
                 </div>
                 {/* Star Rating (Using renderStars) */}
                 <div className="opacity-0 translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0">

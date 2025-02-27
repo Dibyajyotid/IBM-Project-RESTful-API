@@ -5,13 +5,11 @@ import { Route, Routes } from "react-router-dom";
 import HotspotDetails from "./pages/HotspotPage/HotspotDetails";
 import AccommodationDetails from "./components/AccomodationDetails";
 import Auth from "./pages/Auth/Auth";
-import AuthProvider from "./hooks/useAuth"; // Fixed import
-
+import AuthProvider from "./hooks/useAuth"; 
 const App = () => {
   return (
     <AuthProvider>
       {" "}
-      {/* AuthProvider should wrap everything */}
       {/* <Navbar /> */}
       <div className="App">
         <Routes>

@@ -36,13 +36,13 @@ const Auth = () => {
         `http://localhost:5090${endpoint}`,
         formData,
         {
-          withCredentials: true, // ✅ Ensures cookies are sent
+          withCredentials: true,
         }
       );
 
       if (data.success) {
-        login(data.token, data.user); // ✅ Save token and user info
-        navigate("/"); // ✅ Redirect to homepage
+        login(data.token, data.user);
+        navigate("/");
       }
     } catch (err) {
       setError(err.response?.data?.message || "Something went wrong!");
@@ -55,7 +55,7 @@ const Auth = () => {
         <div className="image-container">
           <img
             className="desktop-image"
-            src="/images/tea-garden.jpg"
+            src="images/tea-garden.jpg"
             alt="Travel"
           />
           <img

@@ -74,7 +74,10 @@ export const deleteAccommodation = async (req, res) => {
 export const getSingleAccommodation = async (req, res) => {
   try {
     const accommodation = await Accommodation.findById(req.params.id)
-      .populate("reviews")
+      .populate({
+        path: "reviews",
+        model: "Review",
+      })
       .lean();
 
     if (!accommodation) {
@@ -173,12 +176,10 @@ export const getFeaturedAccommodations = async (req, res) => {
     });
   } catch (error) {
     console.error("Error retrieving featured accommodations:", error);
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "Failed to retrieve featured accommodations",
-      });
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve featured accommodations",
+    });
   }
 };
 

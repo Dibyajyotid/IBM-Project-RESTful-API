@@ -3,7 +3,8 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./css/AccommodationDetails.css";
 import Navbar from "./Navbar";
-import { useAuth } from "../hooks/useAuth"; // Import authentication hook
+import { useAuth } from "../hooks/useAuth";
+import StarRating from "./StarRating";
 
 const AccommodationDetails = () => {
   const { id } = useParams();
@@ -44,14 +45,14 @@ const AccommodationDetails = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:5090/api/booking/${id}`, // ✅ Ensure correct API URL
+        `http://localhost:5090/api/booking/${id}`,
         {
           fullName: bookingData.fullName,
           guestSize: bookingData.guestSize,
           phone: bookingData.phone,
         },
         {
-          withCredentials: true, // ✅ Ensures cookies (JWT) are sent
+          withCredentials: true,
         }
       );
 
@@ -115,7 +116,43 @@ const AccommodationDetails = () => {
             </form>
           </div>
         )}
+
+        {/* Review Section */}
+        <div className="reviews-container">
+          <h2>Guest Reviews</h2>
+          {accommodation.reviews && accommodation.reviews.length > 0 ? (
+            <ul className="review-list">
+              {accommodation.reviews.map((review, index) => (
+                <li key={index} className="review-card">
+                  <h3>{review.username}</h3>
+                  <p className="review-text">"{review.reviewText}"</p>
+                  <div className="ratings">
+                    <p>
+                      Room Quality: <StarRating rating={review.roomQuality} />
+                    </p>
+                    <p>
+                      Cleanliness: <StarRating rating={review.cleanliness} />
+                    </p>
+                    <p>
+                      Food: <StarRating rating={review.food} />
+                    </p>
+                    <p>
+                      Parking: <StarRating rating={review.parking} />
+                    </p>
+                    <p>
+                      Staff Behavior:{" "}
+                      <StarRating rating={review.staffBehaviour} />
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No reviews available for this accommodation.</p>
+          )}
+        </div>
       </div>
+      
     </>
   );
 };
