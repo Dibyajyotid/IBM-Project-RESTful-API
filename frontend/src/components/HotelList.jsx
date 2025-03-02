@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+//import './css/HotelList.css'
 
 const renderStars = (rating) => {
   const totalStars = 5;
@@ -26,7 +27,7 @@ const renderStars = (rating) => {
 };
 
 const HotelList = ({ title, hotels }) => {
-  const navigate = useNavigate(); // Get navigate function
+  const navigate = useNavigate(); 
 
   const handleCardClick = (id) => {
     // Navigate to the accommodation details page with the specific ID
@@ -42,12 +43,12 @@ const HotelList = ({ title, hotels }) => {
         </p>
       </div>
 
-      <div className="hotel-cards grid grid-cols-6 gap-6">
+      <div className="hotel-cards grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
         {hotels.map((hotel) => (
           <div
             key={hotel._id}
             className="hotel-card bg-white rounded-xl overflow-hidden shadow-xl drop-shadow-lg min-h-[380px] transition-all duration-300 ease-in-out hover:shadow-2xl hover:drop-shadow-2xl hover:-translate-y-2 relative group"
-            onClick={() => handleCardClick(hotel._id)} // On card click, navigate to details page
+            onClick={() => handleCardClick(hotel._id)} 
           >
             {/* Image Section */}
             <div className="overflow-hidden relative">

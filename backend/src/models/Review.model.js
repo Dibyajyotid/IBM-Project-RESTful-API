@@ -4,13 +4,7 @@ const reviewSchema = new mongoose.Schema(
   {
     accommodationId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Accommodation", // Dynamically reference either 'Hotel' or 'GuestHouse'
-      required: true,
-    },
-
-    accommodationType: {
-      type: String,
-      enum: ["Hotel", "GuestHouse"],
+      ref: "Accommodation", 
       required: true,
     },
 

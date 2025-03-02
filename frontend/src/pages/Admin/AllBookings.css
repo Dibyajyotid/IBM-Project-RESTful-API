@@ -1,0 +1,12 @@
+.all-bookings-container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .booking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  

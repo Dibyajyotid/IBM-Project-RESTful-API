@@ -5,7 +5,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
-import "./css/ExploreCities.css"; // Import the CSS file
+import "./css/ExploreCities.css"; 
 
 const cities = [
   {

@@ -1,0 +1,27 @@
+Fisrt download the project repository or clone it
+
+for download click download as zip
+
+for clone use
+
+- git clone https://github.com/Dibyajyotid/IBM-Project-RESTful-API.git
+
+then open the code using vscode
+
+then use
+
+- cd frontend
+
+- npm install
+
+- npm run dev
+
+then open a new terminal
+
+the use
+
+- cd backend
+
+- npm install
+
+- npm run dev

@@ -14,9 +14,9 @@ import {
 const router = express.Router();
 
 router.get("/", getAllAccommodations);
-router.post("/", createAccommodation);
+router.post("/", verifyAdmin, createAccommodation);
 router.get("/:id", getSingleAccommodation);
-router.put("/:id", updateAccommodation);
+router.put("/:id",verifyAdmin, updateAccommodation);
 router.delete("/:id", verifyAdmin, deleteAccommodation);
 
 router.get("/search/getAccomodationBySearch", getAccommodationBySearch);

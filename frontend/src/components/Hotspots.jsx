@@ -11,7 +11,7 @@ const Hotspots = () => {
   const [hotspots, setHotspots] = useState([]);
 
   useEffect(() => {
-    // Simulating an API call
+    
     const fetchHotspots = async () => {
       const data = [
         {

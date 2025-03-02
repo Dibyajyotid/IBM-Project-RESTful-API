@@ -8,13 +8,25 @@ import StarRating from "./StarRating";
 
 const AccommodationDetails = () => {
   const { id } = useParams();
-  const { user, authTokens } = useAuth(); // Get logged-in user data
+  const { user, authTokens } = useAuth();
   const [accommodation, setAccommodation] = useState(null);
-  const [showBookingForm, setShowBookingForm] = useState(false); // Toggle booking form
+  const [showBookingForm, setShowBookingForm] = useState(false);
+  const [showReviewForm, setShowReviewForm] = useState(false);
   const [bookingData, setBookingData] = useState({
     fullName: "",
     guestSize: "",
     phone: "",
+    checkInDate: "",
+    checkOutDate: "",
+  });
+  const [reviewData, setReviewData] = useState({
+    username: "",
+    reviewText: "",
+    roomQuality: 5,
+    cleanliness: 5,
+    food: 5,
+    parking: 5,
+    staffBehaviour: 5,
   });
 
   useEffect(() => {
@@ -36,24 +48,36 @@ const AccommodationDetails = () => {
     setShowBookingForm(true);
   };
 
+  const handleShareReviewClick = () => {
+    if (!user) {
+      alert("You need to log in first!");
+      return;
+    }
+    setShowReviewForm(true);
+  };
+
   const handleInputChange = (e) => {
     setBookingData({ ...bookingData, [e.target.name]: e.target.value });
+  };
+
+  const handleReviewChange = (e) => {
+    setReviewData({ ...reviewData, [e.target.name]: e.target.value });
   };
 
   const handleSubmitBooking = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `http://localhost:5090/api/booking/${id}`,
         {
           fullName: bookingData.fullName,
           guestSize: bookingData.guestSize,
           phone: bookingData.phone,
+          checkInDate: bookingData.checkInDate,
+          checkOutDate: bookingData.checkOutDate,
         },
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
 
       alert("Booking Successful!");
@@ -61,6 +85,39 @@ const AccommodationDetails = () => {
     } catch (error) {
       console.error("Error submitting booking:", error.response?.data || error);
       alert("Booking failed! " + (error.response?.data?.message || ""));
+    }
+  };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+
+    if (!user) {
+      alert("You need to log in first!");
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        `http://localhost:5090/api/reviews/${id}`, 
+        {
+          username: reviewData.username,
+          reviewText: reviewData.reviewText,
+          roomQuality: reviewData.roomQuality,
+          cleanliness: reviewData.cleanliness,
+          food: reviewData.food,
+          parking: reviewData.parking,
+          staffBehaviour: reviewData.staffBehaviour,
+        },
+        {
+          withCredentials: true, 
+        }
+      );
+
+      alert("Review submitted successfully!");
+      setShowReviewForm(false);
+    } catch (error) {
+      console.error("Error submitting review:", error.response?.data || error);
+      alert("Failed to submit review. Please try again.");
     }
   };
 
@@ -81,6 +138,9 @@ const AccommodationDetails = () => {
 
         <button className="book-button" onClick={handleBookNowClick}>
           Book Now
+        </button>
+        <button className="review-button" onClick={handleShareReviewClick}>
+          Share a Review
         </button>
 
         {/* Booking Form */}
@@ -112,12 +172,103 @@ const AccommodationDetails = () => {
                 onChange={handleInputChange}
                 required
               />
+              <label>Check-in Date:</label>
+              <input
+                type="date"
+                name="checkInDate"
+                value={bookingData.checkInDate}
+                onChange={handleInputChange}
+                required
+              />
+              <label>Check-out Date:</label>
+              <input
+                type="date"
+                name="checkOutDate"
+                value={bookingData.checkOutDate}
+                onChange={handleInputChange}
+                required
+              />
               <button type="submit">Confirm Booking</button>
             </form>
           </div>
         )}
 
-        {/* Review Section */}
+        {/* Review Form */}
+        {showReviewForm && (
+          <div className="review-form-container">
+            <h2>Share Your Review</h2>
+            <form onSubmit={handleSubmitReview}>
+              <input
+                type="text"
+                name="username"
+                placeholder="Your Name"
+                value={reviewData.username}
+                onChange={handleReviewChange}
+                required
+              />
+              <textarea
+                name="reviewText"
+                placeholder="Your review..."
+                value={reviewData.reviewText}
+                onChange={handleReviewChange}
+                required
+              />
+              <label>Room Quality:</label>
+              <input
+                type="number"
+                name="roomQuality"
+                min="1"
+                max="5"
+                value={reviewData.roomQuality}
+                onChange={handleReviewChange}
+                required
+              />
+              <label>Cleanliness:</label>
+              <input
+                type="number"
+                name="cleanliness"
+                min="1"
+                max="5"
+                value={reviewData.cleanliness}
+                onChange={handleReviewChange}
+                required
+              />
+              <label>Food:</label>
+              <input
+                type="number"
+                name="food"
+                min="1"
+                max="5"
+                value={reviewData.food}
+                onChange={handleReviewChange}
+                required
+              />
+              <label>Parking:</label>
+              <input
+                type="number"
+                name="parking"
+                min="1"
+                max="5"
+                value={reviewData.parking}
+                onChange={handleReviewChange}
+                required
+              />
+              <label>Staff Behaviour:</label>
+              <input
+                type="number"
+                name="staffBehaviour"
+                min="1"
+                max="5"
+                value={reviewData.staffBehaviour}
+                onChange={handleReviewChange}
+                required
+              />
+              <button type="submit">Submit Review</button>
+            </form>
+          </div>
+        )}
+
+        {/* Reviews Section */}
         <div className="reviews-container">
           <h2>Guest Reviews</h2>
           {accommodation.reviews && accommodation.reviews.length > 0 ? (
@@ -140,7 +291,7 @@ const AccommodationDetails = () => {
                       Parking: <StarRating rating={review.parking} />
                     </p>
                     <p>
-                      Staff Behavior:{" "}
+                      Staff Behaviour:{" "}
                       <StarRating rating={review.staffBehaviour} />
                     </p>
                   </div>
@@ -152,7 +303,6 @@ const AccommodationDetails = () => {
           )}
         </div>
       </div>
-      
     </>
   );
 };

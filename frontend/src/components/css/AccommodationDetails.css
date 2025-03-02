@@ -161,4 +161,73 @@
   .filled {
     color: #FFD700; /* Gold for filled stars */
   }
+
+  /* reviews styling */
+
+  .review-button {
+    background-color: #3498db;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 10px;
+    transition: 0.3s;
+  }
   
+  .review-button:hover {
+    background-color: #2980b9;
+  }
+
+  .review-form-container {
+    width: 100%;
+    max-width: 500px;
+    background: #f8f9fa;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .review-form-container h2 {
+    text-align: center;
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+
+  .review-form-container input,
+.review-form-container textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.review-form-container label {
+  font-weight: bold;
+  margin-top: 10px;
+  display: block;
+}
+
+.review-form-container button {
+  width: 100%;
+  padding: 10px;
+  background: #2ecc71;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.review-form-container button:hover {
+  background: #27ae60;
+}
+

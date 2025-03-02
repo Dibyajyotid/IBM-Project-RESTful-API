@@ -15,7 +15,7 @@ const bookingSchema = new mongoose.Schema(
 
     accommodationId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Accommodation", // Now directly references the unified Accommodation model
+      ref: "Accommodation", 
       required: true,
     },
 
@@ -33,6 +33,16 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
+    checkInDate: {
+      type: Date,
+      required: true,
+    },
+    checkOutDate: {
+      type: Date,
+      required: true,
+    },
+    
   },
   { timestamps: true }
 );

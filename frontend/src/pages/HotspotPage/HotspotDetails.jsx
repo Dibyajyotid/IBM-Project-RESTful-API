@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "./HotspotDetails.css";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
 const hotspotsData = [
   {
@@ -166,6 +167,7 @@ const HotspotDetails = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

@@ -6,14 +6,14 @@ import Accommodation from "../models/Accomodation.model.js"; // Unified model
 export const createBooking = async (req, res) => {
   try {
     // Ensure user is authenticated (Token verification is done in middleware)
-    const userId = req.user.userId; // ✅ Extract user ID from token
-    const userEmail = req.user.email; // ✅ Extract user email from token
+    const userId = req.user.userId;
+    const userEmail = req.user.email;
 
-    const { accommodationId } = req.params; // ✅ Get accommodation ID from params
-    const { fullName, guestSize, phone } = req.body;
+    const { accommodationId } = req.params;
+    const { fullName, guestSize, phone, checkInDate, checkOutDate } = req.body;
 
     // Validate required fields
-    if (!fullName || !guestSize || !phone) {
+    if (!fullName || !guestSize || !phone || !checkInDate || !checkOutDate) {
       return res
         .status(400)
         .json({ success: false, message: "Missing required fields" });
@@ -41,6 +41,8 @@ export const createBooking = async (req, res) => {
       fullName,
       guestSize,
       phone,
+      checkInDate,
+      checkOutDate,
     });
 
     const savedBooking = await newBooking.save();
@@ -74,7 +76,9 @@ export const getBooking = async (req, res) => {
 // Get all bookings
 export const getAllBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find().populate("accommodationId");
+    const bookings = await Booking.find()
+      .populate("accommodationId")
+      .populate("userId", "fullName email");
 
     res
       .status(200)
@@ -83,3 +87,59 @@ export const getAllBookings = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error!" });
   }
 };
+
+export const getUserBookings = async (req, res) => {
+  try {
+    const userId = req.params.userId;
+
+    const bookings = await Booking.find({ userId }).populate({
+      path: "accommodationId",
+      model: "Accommodation", // ✅ Ensure the model name is correct
+    });
+
+    if (!bookings.length) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No bookings found" });
+    }
+
+    res.status(200).json({ success: true, data: bookings });
+  } catch (error) {
+    console.error("Error fetching user bookings:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to fetch bookings" });
+  }
+};
+
+export const cancelBooking = async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const deletedBooking = await Booking.findByIdAndDelete(bookingId);
+
+    if (!deletedBooking) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Booking not found" });
+    }
+
+    res
+      .status(200)
+      .json({ success: true, message: "Booking cancelled successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Failed to cancel booking" });
+  }
+};
+
+//update booking controller
+// export const updateBooking = async (req, res) => {
+//   const {bookingId} = req.params
+//   const {}
+//   try {
+    
+//   } catch (error) {
+    
+//   }
+// }

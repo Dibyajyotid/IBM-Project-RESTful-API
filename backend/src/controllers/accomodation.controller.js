@@ -1,4 +1,5 @@
-import Accommodation from "../models/Accomodation.model.js"; // ✅ Ensure correct model import
+import Accommodation from "../models/Accomodation.model.js";
+import Booking from "../models/Booking.model.js";
 
 // Create new accommodation
 export const createAccommodation = async (req, res) => {
@@ -48,7 +49,9 @@ export const updateAccommodation = async (req, res) => {
 
 // Delete accommodation
 export const deleteAccommodation = async (req, res) => {
+  const { id } = req.params;
   try {
+    await Booking.deleteMany({ accommodationId: id });
     const deletedAccommodation = await Accommodation.findByIdAndDelete(
       req.params.id
     );
@@ -59,9 +62,10 @@ export const deleteAccommodation = async (req, res) => {
         .json({ success: false, message: "Accommodation not found" });
     }
 
-    res
-      .status(200)
-      .json({ success: true, message: "Accommodation deleted successfully" });
+    res.status(200).json({
+      success: true,
+      message: "Accommodation and its related Booking deleted successfully",
+    });
   } catch (error) {
     console.error("Error deleting accommodation:", error);
     res

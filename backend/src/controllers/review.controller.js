@@ -2,12 +2,26 @@ import Accommodation from "../models/Accomodation.model.js";
 import Review from "../models/Review.model.js";
 
 export const addReview = async (req, res) => {
-  const { accommodationId, accommodationType, username, reviewText, roomQuality, cleanliness, food, parking, staffBehaviour } = req.body;
-
   try {
+    const { accomodationId } = req.params;
+    const {
+      username,
+      reviewText,
+      roomQuality,
+      cleanliness,
+      food,
+      parking,
+      staffBehaviour,
+    } = req.body;
+
+    if (!accomodationId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Accommodation ID is required." });
+    }
+
     const newReview = new Review({
-      accommodationId,
-      accommodationType,
+      accommodationId: accomodationId,
       username,
       reviewText,
       roomQuality,
@@ -19,17 +33,19 @@ export const addReview = async (req, res) => {
 
     const savedReview = await newReview.save();
 
-    // Push review into the accommodation model
-    const accommodation = await Accommodation.findByIdAndUpdate(accommodationId, {
+    await Accommodation.findByIdAndUpdate(accomodationId, {
       $push: { reviews: savedReview._id },
-    }, { new: true });
+    });
 
-    if (accommodation) {
-      await accommodation.calculateAverageRating(); // Update avgRatings
-    }
-
-    res.status(200).json({ success: true, message: "Review added", data: savedReview });
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "Review submitted successfully!",
+        data: savedReview,
+      });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Failed to add review", error });
+    console.error("Error creating review:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };

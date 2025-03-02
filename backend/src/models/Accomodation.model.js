@@ -66,7 +66,7 @@ const accommodationSchema = new mongoose.Schema(
 );
 
 accommodationSchema.methods.calculateAverageRating = async function () {
-  await this.populate("reviews"); // Populate the reviews
+  await this.populate("reviews");
 
   if (this.reviews.length > 0) {
     const totalRatings = this.reviews.reduce((sum, review) => {
