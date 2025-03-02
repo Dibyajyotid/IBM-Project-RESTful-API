@@ -3,54 +3,76 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px; /* Adjust padding for smaller screens */
+    padding: 15px 20px;
     background-color: #333;
     color: white;
-    margin-bottom: 32px;
+    position: relative;
 }
 
+/* Brand */
 .navbar-brand a {
     text-decoration: none;
-    font-size: 20px; /* Adjust font size */
+    font-size: 22px;
     font-weight: bold;
     color: white;
-    margin-right: 20px;
+    margin-right: 15px;
 }
 
+/* Navbar Links */
 .navbar-links {
     display: flex;
-    gap: 25px;
+    gap: 20px;
 }
 
 .navbar-links a {
     text-decoration: none;
     color: white;
-    font-size: 14px;
+    font-size: 16px;
     transition: color 0.3s ease;
 }
 
 .navbar-links a:hover {
-    color: #06262d;
+    color: #00aaff;
 }
 
-/* Mobile view adjustments */
+/* Hamburger Menu */
+.menu-toggle {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: white;
+}
+
+/* Mobile View */
 @media (max-width: 768px) {
-    .navbar {
-        flex-direction: row; /* Keep navbar items in a single line */
-        justify-content: space-between; /* Space out brand and links */
-        padding: 10px 15px; /* Adjust padding for mobile */
+    .menu-toggle {
+        display: block;
     }
 
     .navbar-links {
-        flex-direction: row; /* Keep links in one row */
-        gap: 10px; /* Adjust gap between links for mobile */
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background: #222;
+        width: 200px;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .navbar-links.open {
+        display: flex;
     }
 
     .navbar-links a {
-        font-size: 14px; /* Adjust font size for mobile */
+        padding: 10px;
+        font-size: 14px;
     }
 
     .navbar-brand a {
-        font-size: 18px; /* Adjust brand font size for mobile */
+        font-size: 18px;
     }
 }

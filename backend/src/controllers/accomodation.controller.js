@@ -1,11 +1,37 @@
 import Accommodation from "../models/Accomodation.model.js";
 import Booking from "../models/Booking.model.js";
-
+import cloudinary from "../lib/cloudinary.js";
 // Create new accommodation
 export const createAccommodation = async (req, res) => {
   try {
-    const newAccommodation = new Accommodation(req.body);
+    const { name, type, city, price, maxSize, phone, address, desc } = req.body;
+    let imageUrl = "";
+
+    if (req.file) {
+      const result = await cloudinary.uploader.upload(req.file.path, {
+        folder: "accommodations",
+      });
+      imageUrl = result.secure_url;
+    } else {
+      return res
+        .status(400)
+        .json({ success: false, message: "Image is required!" });
+    }
+
+    const newAccommodation = new Accommodation({
+      name,
+      type,
+      city,
+      price,
+      maxSize,
+      phone,
+      address,
+      desc,
+      photo: imageUrl, // Store Cloudinary URL
+    });
+
     const savedAccommodation = await newAccommodation.save();
+
     res.status(201).json({
       success: true,
       message: "Accommodation created successfully",

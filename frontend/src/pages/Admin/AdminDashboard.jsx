@@ -73,6 +73,8 @@ const AdminDashboard = () => {
     setUpdatedData({ ...updatedData, [e.target.name]: e.target.value });
   };
 
+  
+
   // Submit Update Form
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
@@ -107,6 +109,10 @@ const AdminDashboard = () => {
           Welcome, {user.fullName}! Here you can manage accommodations and
           bookings.
         </p>
+
+        <button className="add-btn" onClick={() => navigate("/admin/add-accommodation")}>
+          Add Accommodation
+        </button>
 
         <div className="accommodations-list">
           {accommodations.length > 0 ? (

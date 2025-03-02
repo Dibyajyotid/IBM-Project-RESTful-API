@@ -1,4 +1,5 @@
 import express from "express";
+import multer from 'multer';
 import { verifyAdmin } from "../middlewares/auth.middleware.js";
 import {
   createAccommodation,
@@ -13,8 +14,12 @@ import {
 
 const router = express.Router();
 
+// Configure Multer for file uploads
+const storage = multer.diskStorage({});
+const upload = multer({ storage });
+
 router.get("/", getAllAccommodations);
-router.post("/", verifyAdmin, createAccommodation);
+router.post("/", verifyAdmin,upload.single("photo"), createAccommodation);
 router.get("/:id", getSingleAccommodation);
 router.put("/:id",verifyAdmin, updateAccommodation);
 router.delete("/:id", verifyAdmin, deleteAccommodation);

@@ -10,6 +10,7 @@ import MyBookings from "./pages/MyBookings/MyBookings";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AllBookings from "./pages/Admin/AllBookings";
 import AllUsers from "./pages/Admin/AllUsers";
+import AddAccomodation from "./pages/Admin/AddAccomodation";
 const App = () => {
   return (
     <AuthProvider>
@@ -25,6 +26,8 @@ const App = () => {
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/bookings" element={<AllBookings />} />
           <Route path="/users" element={<AllUsers />} />
+          <Route path="/admin/add-accommodation" element={<AddAccomodation />} />
+
         </Routes>
       </div>
     </AuthProvider>
