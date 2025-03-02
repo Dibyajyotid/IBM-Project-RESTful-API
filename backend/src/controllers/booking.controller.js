@@ -1,12 +1,11 @@
 import Booking from "../models/Booking.model.js";
-import Accommodation from "../models/Accomodation.model.js"; // Unified model
+import Accommodation from "../models/Accomodation.model.js";
 //import User from "../models/User.model.js";
 
 // Create new booking
 export const createBooking = async (req, res) => {
   try {
-    // Ensure user is authenticated (Token verification is done in middleware)
-    const userId = req.user.userId;
+    const userId = req.user._id;
     const userEmail = req.user.email;
 
     const { accommodationId } = req.params;
@@ -138,8 +137,8 @@ export const cancelBooking = async (req, res) => {
 //   const {bookingId} = req.params
 //   const {}
 //   try {
-    
+
 //   } catch (error) {
-    
+
 //   }
 // }
