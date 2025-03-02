@@ -81,7 +81,7 @@ const MyBookings = () => {
           <p>No bookings found.</p>
         )}
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };
