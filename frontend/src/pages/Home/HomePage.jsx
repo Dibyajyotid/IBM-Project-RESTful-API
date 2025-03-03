@@ -37,8 +37,10 @@ const HomePage = () => {
   }, []);
 
   return (
+    <>
+    <Navbar />
     <div className="home-container">
-      <Navbar />
+    
       <HeroSection />
       <SearchBar />
       <Hotspots />
@@ -47,6 +49,7 @@ const HomePage = () => {
       <HotelList title="Comfortable Guest Houses" hotels={guestHouses} />
       <Footer />
     </div>
+    </>
   );
 };
 

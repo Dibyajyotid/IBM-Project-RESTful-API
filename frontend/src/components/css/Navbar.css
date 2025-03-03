@@ -8,6 +8,7 @@
     color: white;
     position: relative;
     margin-bottom: 32px;
+    z-index: 1000;
 }
 
 /* Brand */
@@ -44,6 +45,7 @@
     background: none;
     border: none;
     color: white;
+    
 }
 
 /* Mobile View */
