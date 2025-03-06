@@ -1,5 +1,5 @@
 import React from "react";
-import "./css/BookingCard.css"; 
+import "./css/BookingCard.css";
 
 const BookingCard = ({ booking, onCancel }) => {
   return (
@@ -25,8 +25,7 @@ const BookingCard = ({ booking, onCancel }) => {
         {/* Booked By */}
         <div className="booked-by">
           <p>
-            <strong>Booked by:</strong> {booking.userId.fullName} (
-            {booking.userId.email})
+            <strong>Booked by:</strong> {booking.fullName} ({booking.userEmail})
           </p>
         </div>
 

@@ -5,12 +5,13 @@ import { Route, Routes } from "react-router-dom";
 import HotspotDetails from "./pages/HotspotPage/HotspotDetails";
 import AccommodationDetails from "./components/AccomodationDetails";
 import Auth from "./pages/Auth/Auth";
-import AuthProvider from "./hooks/useAuth"; 
+import AuthProvider from "./hooks/useAuth";
 import MyBookings from "./pages/MyBookings/MyBookings";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AllBookings from "./pages/Admin/AllBookings";
 import AllUsers from "./pages/Admin/AllUsers";
 import AddAccomodation from "./pages/Admin/AddAccomodation";
+import Footer from "./components/Footer";
 const App = () => {
   return (
     <AuthProvider>
@@ -26,8 +27,10 @@ const App = () => {
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/bookings" element={<AllBookings />} />
           <Route path="/users" element={<AllUsers />} />
-          <Route path="/admin/add-accommodation" element={<AddAccomodation />} />
-
+          <Route
+            path="/admin/add-accommodation"
+            element={<AddAccomodation />}
+          />
         </Routes>
       </div>
     </AuthProvider>
